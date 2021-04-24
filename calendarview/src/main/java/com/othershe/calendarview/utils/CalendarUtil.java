@@ -14,9 +14,104 @@ import java.util.Map;
 public class CalendarUtil {
     /**
      * 获得当月显示的日期（上月 + 当月 + 下月）
-     *
-     * @param year  当前年份
+     * @param year 当前年份
      * @param month 当前月份
+     * @param map
+     * @param mapClockInStatus  新增是否打卡
+     * @return
+     */
+    public static List<DateBean> getMonthDate(int year, int month, Map<String, String> map, Map<String, String> mapClockInStatus) {
+        List<DateBean> datas = new ArrayList<>();
+        int week = SolarUtil.getFirstWeekOfMonth(year, month - 1);
+        int lastYear;
+        int lastMonth;
+        if (month == 1) {
+            lastMonth = 12;
+            lastYear = year - 1;
+        } else {
+            lastMonth = month - 1;
+            lastYear = year;
+        }
+        int lastMonthDays = SolarUtil.getMonthDays(lastYear, lastMonth);//上个月总天数
+        int currentMonthDays = SolarUtil.getMonthDays(year, month);//当前月总天数
+        int nextYear;
+        int nextMonth;
+        if (month == 12) {
+            nextMonth = 1;
+            nextYear = year + 1;
+        } else {
+            nextMonth = month + 1;
+            nextYear = year;
+        }
+
+        for (int i = 0; i < week; i++) {
+            datas.add(initDateBean(lastYear, lastMonth, lastMonthDays - week + 1 + i, 0, map,mapClockInStatus));
+        }
+
+        for (int i = 0; i < currentMonthDays; i++) {
+            datas.add(initDateBean(year, month, i + 1, 1, map,mapClockInStatus));
+        }
+
+        for (int i = 0; i < 7 * getMonthRows(year, month) - currentMonthDays - week; i++) {
+            datas.add(initDateBean(nextYear, nextMonth, i + 1, 2, map,mapClockInStatus));
+        }
+
+        return datas;
+    }
+
+    /**
+     *
+     * @param year
+     * @param month
+     * @param day
+     * @param type
+     * @param map
+     * @param mapClockInStatus  新增是否打卡
+     * @return
+     */
+    private static DateBean initDateBean(int year, int month, int day, int type, Map<String, String> map,Map<String, String> mapClockInStatus) {
+        DateBean dateBean = new DateBean();
+        dateBean.setSolar(year, month, day);
+
+        if (map == null) {
+            String[] temp = LunarUtil.solarToLunar(year, month, day);
+            dateBean.setLunar(new String[]{temp[0], temp[1]});
+            dateBean.setLunarHoliday(temp[2]);
+        } else {
+            if (map.containsKey(year + "." + month + "." + day)) {
+                dateBean.setLunar(new String[]{"", map.get(year + "." + month + "." + day), ""});
+            } else {
+                dateBean.setLunar(new String[]{"", "", ""});
+            }
+        }
+
+        if (mapClockInStatus!=null && mapClockInStatus.containsKey(year + "." + month + "." + day)) {
+            if ("false".equals(mapClockInStatus.get(year + "." + month + "." + day))) {
+                dateBean.setClickInStatus(-1);
+            } else if ("true".equals(mapClockInStatus.get(year + "." + month + "." + day))) {
+                dateBean.setClickInStatus(2);
+            } else {
+                dateBean.setClickInStatus(3);
+            }
+        } else {
+            dateBean.setClickInStatus(0);
+        }
+
+        dateBean.setType(type);
+        dateBean.setTerm(LunarUtil.getTermString(year, month - 1, day));
+        if (type == 0) {
+            dateBean.setSolarHoliday(SolarUtil.getSolarHoliday(year, month, day - 1));
+        } else {
+            dateBean.setSolarHoliday(SolarUtil.getSolarHoliday(year, month, day));
+        }
+        return dateBean;
+    }
+
+    /**
+     * 获得当月显示的日期（上月 + 当月 + 下月）
+     * @param year 当前年份
+     * @param month 当前月份
+     * @param map
      * @return
      */
     public static List<DateBean> getMonthDate(int year, int month, Map<String, String> map) {

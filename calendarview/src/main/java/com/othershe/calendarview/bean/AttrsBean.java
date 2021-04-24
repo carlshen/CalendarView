@@ -30,6 +30,8 @@ public class AttrsBean {
     private Map<String, String> specifyMap;//指定日期对应的文字map
     private int chooseType = 0;//表示日历是单选还是多选
 
+    private Map<String, String> clockInStatus;//制定日期打卡完成：true：正常-灰色点；false：异常；其它：没有打卡
+
     public int[] getStartDate() {
         return startDate;
     }
@@ -180,6 +182,14 @@ public class AttrsBean {
 
     public void setSpecifyMap(Map<String, String> specifyMap) {
         this.specifyMap = specifyMap;
+    }
+
+    public Map<String, String> getClockInStatus() {
+        return clockInStatus;
+    }
+
+    public void setClockInStatus(Map<String, String> clockInStatus) {
+        this.clockInStatus = clockInStatus;
     }
 
     public int getChooseType() {

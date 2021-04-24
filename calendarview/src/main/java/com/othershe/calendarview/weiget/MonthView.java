@@ -28,6 +28,8 @@ public class MonthView extends ViewGroup {
 
     private static final int COLOR_RESET = 0;//重置文字颜色
     private static final int COLOR_SET = 1;//设置文字颜色
+    private static final int COLOR_CLOCK = 2;//设置打卡颜色
+    private static final int COLOR_SCAN = 3;//设置扫码颜色
 
     private Context mContext;
 
@@ -187,58 +189,67 @@ public class MonthView extends ViewGroup {
                 }
             }
 
-            view.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int day = date.getSolar()[2];
-                    CalendarView calendarView = (CalendarView) getParent();
-                    OnSingleChooseListener clickListener = calendarView.getSingleChooseListener();
-                    OnMultiChooseListener chooseListener = calendarView.getMultiChooseListener();
-                    if (date.getType() == 1) {//点击当月
-                        if (mAttrsBean.getChooseType() == 1 && chooseListener != null) {//多选的情况
-                            boolean flag;
-                            if (chooseDays.contains(day)) {
-                                setDayColor(v, COLOR_RESET);
-                                chooseDays.remove(day);
-                                flag = false;
-                            } else {
-                                setDayColor(v, COLOR_SET);
-                                chooseDays.add(day);
-                                flag = true;
-                            }
-                            calendarView.setChooseDate(day, flag, -1);
-                            chooseListener.onMultiChoose(v, date, flag);
-                        } else {
-                            calendarView.setLastClickDay(day);
-                            if (lastClickedView != null) {
-                                setDayColor(lastClickedView, COLOR_RESET);
-                            }
-                            setDayColor(v, COLOR_SET);
-                            lastClickedView = v;
-
-                            if (clickListener != null) {
-                                clickListener.onSingleChoose(v, date);
-                            }
-                        }
-                    } else if (date.getType() == 0) {//点击上月
-                        if (mAttrsBean.isSwitchChoose()) {
-                            calendarView.setLastClickDay(day);
-                        }
-                        calendarView.lastMonth();
-                        if (clickListener != null) {
-                            clickListener.onSingleChoose(v, date);
-                        }
-                    } else if (date.getType() == 2) {//点击下月
-                        if (mAttrsBean.isSwitchChoose()) {
-                            calendarView.setLastClickDay(day);
-                        }
-                        calendarView.nextMonth();
-                        if (clickListener != null) {
-                            clickListener.onSingleChoose(v, date);
-                        }
-                    }
-                }
-            });
+            /**
+             * 处理状态
+             */
+            if (date.getClickInStatus() == COLOR_SCAN) {
+                setDayColor(view, COLOR_SCAN);
+            } else if (date.getClickInStatus() == COLOR_CLOCK) {
+                setDayColor(view, COLOR_CLOCK);
+            } else { // processed above
+            }
+//            view.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    int day = date.getSolar()[2];
+//                    CalendarView calendarView = (CalendarView) getParent();
+//                    OnSingleChooseListener clickListener = calendarView.getSingleChooseListener();
+//                    OnMultiChooseListener chooseListener = calendarView.getMultiChooseListener();
+//                    if (date.getType() == 1) {//点击当月
+//                        if (mAttrsBean.getChooseType() == 1 && chooseListener != null) {//多选的情况
+//                            boolean flag;
+//                            if (chooseDays.contains(day)) {
+//                                setDayColor(v, COLOR_RESET);
+//                                chooseDays.remove(day);
+//                                flag = false;
+//                            } else {
+//                                setDayColor(v, COLOR_SET);
+//                                chooseDays.add(day);
+//                                flag = true;
+//                            }
+//                            calendarView.setChooseDate(day, flag, -1);
+//                            chooseListener.onMultiChoose(v, date, flag);
+//                        } else {
+//                            calendarView.setLastClickDay(day);
+//                            if (lastClickedView != null) {
+//                                setDayColor(lastClickedView, COLOR_RESET);
+//                            }
+//                            setDayColor(v, COLOR_SET);
+//                            lastClickedView = v;
+//
+//                            if (clickListener != null) {
+//                                clickListener.onSingleChoose(v, date);
+//                            }
+//                        }
+//                    } else if (date.getType() == 0) {//点击上月
+//                        if (mAttrsBean.isSwitchChoose()) {
+//                            calendarView.setLastClickDay(day);
+//                        }
+//                        calendarView.lastMonth();
+//                        if (clickListener != null) {
+//                            clickListener.onSingleChoose(v, date);
+//                        }
+//                    } else if (date.getType() == 2) {//点击下月
+//                        if (mAttrsBean.isSwitchChoose()) {
+//                            calendarView.setLastClickDay(day);
+//                        }
+//                        calendarView.nextMonth();
+//                        if (clickListener != null) {
+//                            clickListener.onSingleChoose(v, date);
+//                        }
+//                    }
+//                }
+//            });
             addView(view, i);
         }
         requestLayout();
@@ -268,6 +279,14 @@ public class MonthView extends ViewGroup {
             }
         } else if (type == 1) {
             v.setBackgroundResource(mAttrsBean.getDayBg());
+            solarDay.setTextColor(mAttrsBean.getColorChoose());
+            lunarDay.setTextColor(mAttrsBean.getColorChoose());
+        } else if (type == COLOR_CLOCK) {
+            v.setBackgroundResource(R.drawable.gray_circle);
+            solarDay.setTextColor(mAttrsBean.getColorChoose());
+            lunarDay.setTextColor(mAttrsBean.getColorChoose());
+        } else if (type == COLOR_SCAN) {
+            v.setBackgroundResource(R.drawable.green_circle);
             solarDay.setTextColor(mAttrsBean.getColorChoose());
             lunarDay.setTextColor(mAttrsBean.getColorChoose());
         }

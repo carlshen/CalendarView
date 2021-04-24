@@ -1,6 +1,5 @@
 package com.othershe.calendarview.weiget;
 
-import android.support.v4.view.PagerAdapter;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +50,8 @@ public class CalendarPagerAdapter extends PagerAdapter {
         int[] date = CalendarUtil.positionToDate(position, mAttrsBean.getStartDate()[0], mAttrsBean.getStartDate()[1]);
         view.setAttrsBean(mAttrsBean);
         view.setOnCalendarViewAdapter(item_layout, calendarViewAdapter);
-        view.setDateList(CalendarUtil.getMonthDate(date[0], date[1], mAttrsBean.getSpecifyMap()), SolarUtil.getMonthDays(date[0], date[1]));
+//        view.setDateList(CalendarUtil.getMonthDate(date[0], date[1], mAttrsBean.getSpecifyMap()), SolarUtil.getMonthDays(date[0], date[1]));
+        view.setDateList(CalendarUtil.getMonthDate(date[0], date[1], mAttrsBean.getSpecifyMap(), mAttrsBean.getClockInStatus()), SolarUtil.getMonthDays(date[0], date[1]));
         mViews.put(position, view);
         container.addView(view);
 

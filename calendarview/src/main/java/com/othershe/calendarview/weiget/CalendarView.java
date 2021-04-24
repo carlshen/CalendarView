@@ -2,8 +2,8 @@ package com.othershe.calendarview.weiget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.othershe.calendarview.R;
@@ -11,8 +11,8 @@ import com.othershe.calendarview.bean.AttrsBean;
 import com.othershe.calendarview.bean.DateBean;
 import com.othershe.calendarview.listener.CalendarViewAdapter;
 import com.othershe.calendarview.listener.OnMultiChooseListener;
-import com.othershe.calendarview.listener.OnSingleChooseListener;
 import com.othershe.calendarview.listener.OnPagerChangeListener;
+import com.othershe.calendarview.listener.OnSingleChooseListener;
 import com.othershe.calendarview.utils.CalendarUtil;
 import com.othershe.calendarview.utils.SolarUtil;
 
@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CalendarView extends ViewPager {
+public class CalendarView extends MyViewPager {
     //记录当前PagerAdapter的position
     private int currentPosition;
 
@@ -172,6 +172,10 @@ public class CalendarView extends ViewPager {
      */
     private void refreshMonthView(int position) {
         MonthView monthView = calendarPagerAdapter.getViews().get(position);
+        if (monthView == null) {
+            Log.e("CalendarView", "refreshMonthView is null?");
+            return;
+        }
         if (mAttrsBean.getChooseType() == 1) {//多选
             if (chooseDate.get(position) != null)
                 monthView.multiChooseRefresh(chooseDate.get(position));
@@ -333,7 +337,7 @@ public class CalendarView extends ViewPager {
         return true;
     }
 
-    private void toDestDate(int year, int month, int day) {
+    public void toDestDate(int year, int month, int day) {
         int destPosition = CalendarUtil.dateToPosition(year, month, startDate[0], startDate[1]);
         if (!mAttrsBean.isSwitchChoose() && day != 0) {
             lastClickDate[0] = destPosition;
@@ -401,6 +405,13 @@ public class CalendarView extends ViewPager {
      */
     public CalendarView setSpecifyMap(HashMap<String, String> map) {
         mAttrsBean.setSpecifyMap(map);
+        return this;
+    }
+
+    public CalendarView setClockInStatus(HashMap<String, String> map) {
+        mAttrsBean.setClockInStatus(map);
+        calendarPagerAdapter.setAttrsBean(mAttrsBean);
+        calendarPagerAdapter.notifyDataSetChanged();
         return this;
     }
 

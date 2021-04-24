@@ -51,6 +51,7 @@
         calendarview:show_holiday="true"
         calendarview:show_lunar="true"
         calendarview:show_term="true"
+        calendarview:show_last_next="false"
         calendarview:switch_choose="false" />
 
     <LinearLayout

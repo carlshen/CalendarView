@@ -3,8 +3,8 @@ package com.othershe.calendarviewtest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private CalendarView calendarView;
     private TextView chooseDate;
-
+    private HashMap<String, String> map = new HashMap<>();
     private int[] cDate = CalendarUtil.getCurrentDate();
 
     @Override
@@ -36,13 +36,16 @@ public class MainActivity extends AppCompatActivity {
         chooseDate = findViewById(R.id.choose_date);
 
         calendarView = (CalendarView) findViewById(R.id.calendar);
-        HashMap<String, String> map = new HashMap<>();
-        map.put("2017.10.30", "qaz");
-        map.put("2017.10.1", "wsx");
-        map.put("2017.11.12", "yhn");
-        map.put("2017.9.15", "edc");
-        map.put("2017.11.6", "rfv");
-        map.put("2017.11.11", "tgb");
+        map = new HashMap<>();
+        map.put("2021.3.30", "true");
+        map.put("2021.3.1", "false");
+        map.put("2021.3.12", "false");
+        map.put("2021.4.15", "false");
+        map.put("2021.4.6", "false");
+        map.put("2021.4.11", "true");
+        map.put("2021.4.20", "true");
+        map.put("2021.4.1", "5");
+        map.put("2021.4.12", "3");
         calendarView
 //                .setSpecifyMap(map)
                 .setStartEndDate("2016.1", "2028.12")
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 .setInitDate(cDate[0] + "." + cDate[1])
                 .setSingleDate(cDate[0] + "." + cDate[1] + "." + cDate[2])
                 .init();
-
+        calendarView.setClockInStatus(map);
 //       .setOnCalendarViewAdapter(R.layout.item_layout, new CalendarViewAdapter() {
 //            @Override
 //            public TextView[] convertView(View view, DateBean date) {

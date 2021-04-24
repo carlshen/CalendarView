@@ -7,6 +7,7 @@ public class DateBean {
     private String lunarHoliday;//阳历节假日
     private int type;//0:上月，1:当月，2:下月
     private String term;//节气
+    private int clickInStatus;//0:未打卡，1:正常打卡，2:打卡扫码
 
     public int[] getSolar() {
         return solar;
@@ -54,5 +55,13 @@ public class DateBean {
 
     public void setTerm(String term) {
         this.term = term;
+    }
+
+    public int getClickInStatus() {
+        return clickInStatus;
+    }
+
+    public void setClickInStatus(int clickInStatus) {
+        this.clickInStatus = clickInStatus;
     }
 }
