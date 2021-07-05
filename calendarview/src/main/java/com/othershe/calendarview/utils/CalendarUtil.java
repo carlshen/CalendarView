@@ -89,7 +89,7 @@ public class CalendarUtil {
             if ("false".equals(mapClockInStatus.get(year + "." + month + "." + day))) {
                 dateBean.setClickInStatus(-1);
             } else if ("true".equals(mapClockInStatus.get(year + "." + month + "." + day))) {
-                dateBean.setClickInStatus(2);
+                dateBean.setClickInStatus(0);
             } else {
                 dateBean.setClickInStatus(3);
             }

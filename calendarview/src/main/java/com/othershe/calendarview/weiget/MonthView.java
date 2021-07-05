@@ -51,7 +51,7 @@ public class MonthView extends ViewGroup {
         super(context, attrs, 0);
 
         mContext = context;
-        setBackgroundColor(Color.WHITE);
+        setBackgroundColor(getResources().getColor(R.color.month_back));
     }
 
     /**
@@ -278,15 +278,15 @@ public class MonthView extends ViewGroup {
                 lunarDay.setTextColor(mAttrsBean.getColorLunar());
             }
         } else if (type == 1) {
-            v.setBackgroundResource(mAttrsBean.getDayBg());
+            v.setBackgroundResource(R.drawable.circle_grey);
             solarDay.setTextColor(mAttrsBean.getColorChoose());
             lunarDay.setTextColor(mAttrsBean.getColorChoose());
         } else if (type == COLOR_CLOCK) {
-            v.setBackgroundResource(R.drawable.gray_circle);
+            v.setBackgroundResource(R.drawable.circle_light_blue);
             solarDay.setTextColor(mAttrsBean.getColorChoose());
             lunarDay.setTextColor(mAttrsBean.getColorChoose());
         } else if (type == COLOR_SCAN) {
-            v.setBackgroundResource(R.drawable.green_circle);
+            v.setBackgroundResource(R.drawable.circle_blue);
             solarDay.setTextColor(mAttrsBean.getColorChoose());
             lunarDay.setTextColor(mAttrsBean.getColorChoose());
         }

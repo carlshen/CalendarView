@@ -37,15 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
         calendarView = (CalendarView) findViewById(R.id.calendar);
         map = new HashMap<>();
-        map.put("2021.3.30", "true");
-        map.put("2021.3.1", "false");
-        map.put("2021.3.12", "false");
-        map.put("2021.4.15", "false");
-        map.put("2021.4.6", "false");
-        map.put("2021.4.11", "true");
-        map.put("2021.4.20", "true");
-        map.put("2021.4.1", "5");
-        map.put("2021.4.12", "3");
+        map.put("2021.5.30", "true");
+        map.put("2021.5.1", "true");
+        map.put("2021.5.12", "5");
+        map.put("2021.5.15", "3");
+        map.put("2021.6.6", "false");
+        map.put("2021.6.10", "-1");
+        map.put("2021.6.21", "-1");
+        map.put("2021.6.1", "5");
+        map.put("2021.6.12", "3");
         calendarView
 //                .setSpecifyMap(map)
                 .setStartEndDate("2016.1", "2028.12")
